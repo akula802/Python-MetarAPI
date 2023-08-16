@@ -24,7 +24,7 @@ class make_faa_api_request:
         import json
         import math
 
-        # Disable SSL warnings
+        # Disable SSL warnings - dev laptop has MITM certs that break everything
         urllib3.disable_warnings()
 
         # Base METAR query URL
@@ -50,9 +50,23 @@ class make_faa_api_request:
         if faa_response.status_code == 200:
           
             # Return the data
-            #faa_response_json = json.loads(faa_response.content)
             if faa_response:
-                return (faa_response.status_code, faa_response.content)#, faa_response_json)
+
+                # Convert the XML to JSON or something else we can work with
+                import xml.etree.ElementTree as ET
+                tree = ET.fromstring(faa_response.text)
+
+                # Get the stuff
+                #for thing in tree[6][0]:
+                #    print(thing.tag, thing.attrib)
+                
+                # METAR raw text
+                faa_metar_raw_text = tree[6][0][0].text
+
+                # Station ID
+                #faa_station_id = tree[6][0][1].text
+
+                return (faa_response.status_code, faa_metar_raw_text)
             else:
                 return "what the fuck"
 
