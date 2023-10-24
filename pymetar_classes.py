@@ -17,7 +17,7 @@ class make_faa_api_request:
         self.station_id = station_id
 
 
-    def request_result_all(self):
+    def get_metars(self):
         # Needfuls
         import requests
         import urllib3
@@ -28,7 +28,7 @@ class make_faa_api_request:
         urllib3.disable_warnings()
 
         # Base METAR query URL
-        query_url = "https://www.aviationweather.gov/adds/dataserver_current/httpparam?datasource=metars&requestType=retrieve&format=xml&mostRecentForEachStation=constraint&hoursBeforeNow=1.25&stationString={}".format(self.station_id)
+        query_url = "https://www.aviationweather.gov/api/data/metar?ids={}".format(self.station_id)
 
         # Final list to be returned if query is successful
         #faa_response_final = []
@@ -53,20 +53,21 @@ class make_faa_api_request:
             if faa_response:
 
                 # Convert the XML to JSON or something else we can work with
-                import xml.etree.ElementTree as ET
-                tree = ET.fromstring(faa_response.text)
+                #import xml.etree.ElementTree as ET
+                #tree = ET.fromstring(faa_response.text)
 
                 # Get the stuff
                 #for thing in tree[6][0]:
                 #    print(thing.tag, thing.attrib)
                 
                 # METAR raw text
-                faa_metar_raw_text = tree[6][0][0].text
+                faa_metar_raw_text = faa_response.text
 
                 # Station ID
                 #faa_station_id = tree[6][0][1].text
 
-                return (faa_response.status_code, faa_metar_raw_text)
+                #return (faa_response.status_code, faa_metar_raw_text)
+                return faa_metar_raw_text
             else:
                 return "what the fuck"
 

@@ -12,8 +12,8 @@ import pymetar_classes
 
 
 # Action
-print('Starting...')
-faa_request_object = pymetar_classes.make_faa_api_request('KBJC')
-faa_request_result = faa_request_object.request_result_all()
+print('\nStarting...\n')
+faa_request_object = pymetar_classes.make_faa_api_request('KBJC,KEIK,KLMO,KFNL,KGXY,KDEN,KAPA')
+faa_request_result = faa_request_object.get_metars()
 print(faa_request_result)
-print('End')
+print('End\n')
