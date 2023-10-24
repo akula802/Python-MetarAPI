@@ -10,6 +10,10 @@
 
 
 
+### NOTE - API DOCS: https://aviationweather.gov/data/api/#/Data/dataMetars ###
+
+
+
 ############################
 
 class make_faa_api_request:
